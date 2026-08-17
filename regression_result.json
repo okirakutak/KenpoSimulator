@@ -1,0 +1,53 @@
+{
+  "r_squared": 0.1615,
+  "r_squared_adj": 0.1432,
+  "f_statistic": 8.8222,
+  "f_pvalue": 1.13e-07,
+  "aic": 24.1474,
+  "bic": 44.9049,
+  "coefficients": {
+    "切片": {
+      "coefficient": 12.001543,
+      "std_error": 0.706937,
+      "t_value": 16.9768,
+      "p_value": 0.0
+    },
+    "特定健診等": {
+      "coefficient": -0.015513,
+      "std_error": 0.003128,
+      "t_value": -4.9593,
+      "p_value": 1e-06
+    },
+    "特定保健指導": {
+      "coefficient": 0.009896,
+      "std_error": 0.003032,
+      "t_value": 3.2641,
+      "p_value": 0.001266
+    },
+    "対象者減少率": {
+      "coefficient": 0.001275,
+      "std_error": 0.014103,
+      "t_value": 0.0904,
+      "p_value": 0.928051
+    },
+    "受診勧奨": {
+      "coefficient": 0.001696,
+      "std_error": 0.001655,
+      "t_value": 1.0252,
+      "p_value": 0.306369
+    },
+    "後発医薬品": {
+      "coefficient": -0.017148,
+      "std_error": 0.00547,
+      "t_value": -3.1348,
+      "p_value": 0.001944
+    }
+  },
+  "standardized_coefficients": {
+    "特定健診等": -0.3958,
+    "特定保健指導": 0.2522,
+    "対象者減少率": 0.0057,
+    "受診勧奨": 0.0758,
+    "後発医薬品": -0.2321
+  }
+}

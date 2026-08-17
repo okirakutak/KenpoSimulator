@@ -1,0 +1,715 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'><style type='text/css'>html {overflow-x: initial !important;}</style>
+<style type='text/css'  id="style-mermaid">:root { --mermaid-theme: default; --mermaid-sequence-numbers: off; --mermaid-flowchart-curve: linear; --mermaid--gantt-left-padding: 75; --sequence-theme: simple; }
+.privacy { display: none; }
+
+</style>
+<style type='text/css'  id="style-base">:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+.mac-os-11 { --title-bar-height: 28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI Emoji", "SF Pro", sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5 { white-space: pre-wrap; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p *, #write.first-line-indent svg * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; height: auto; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; position: relative; }
+#write svg h1, #write svg h2, #write svg h3, #write svg h4, #write svg h5, #write svg h6, #write svg p { position: static; }
+svg sub, svg sup { position: static; }
+.nodeLabel p { padding-right: 2px; padding-left: 2px; }
+.typora-export .nodeLabel p { padding-right: 0px; padding-left: 0px; }
+foreignobject { overflow: visible; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+li p { orphans: 1; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+thead, tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+svg { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; border-color: transparent !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  #write > p:nth-child(1) { margin-top: 0px; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+  figure { overflow-x: visible; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.reversefootnote { font-family: ui-monospace, sans-serif; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.mermaid-svg { margin: auto; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex: 2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; overflow-wrap: anywhere; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+mjx-container { break-inside: avoid; }
+.md-alert.md-alert-note { border-left-color: rgb(9, 105, 218); }
+.md-alert.md-alert-important { border-left-color: rgb(130, 80, 223); }
+.md-alert.md-alert-warning { border-left-color: rgb(154, 103, 0); }
+.md-alert.md-alert-tip { border-left-color: rgb(31, 136, 61); }
+.md-alert.md-alert-caution { border-left-color: rgb(207, 34, 46); }
+.md-alert { padding: 0px 1em; margin-bottom: 16px; color: inherit; border-left: 0.25em solid rgb(0, 0, 0); }
+.md-alert-text-note { color: rgb(9, 105, 218); }
+.md-alert-text-important { color: rgb(130, 80, 223); }
+.md-alert-text-warning { color: rgb(154, 103, 0); }
+.md-alert-text-tip { color: rgb(31, 136, 61); }
+.md-alert-text-caution { color: rgb(207, 34, 46); }
+.md-alert-text { font-size: 0.9rem; font-weight: 700; }
+.md-alert-text svg { fill: currentcolor; position: relative; top: 0.125em; margin-right: 1ch; overflow: visible; }
+.md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
+
+</style>
+<style type='text/css'  id="style-codemirror">.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background: inherit; }
+.CodeMirror-scroll { overflow: auto hidden; z-index: 3; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background: inherit; white-space: nowrap; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { height: 100%; outline: 0px; position: relative; box-sizing: content-box; background: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; outline: 0px; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: auto hidden; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 10px; z-index: 3; overflow-y: hidden; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: 0px 0px !important; border: none !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: 0px 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; overflow-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { overflow-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; inset: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+span.cm-underlined { text-decoration: underline; }
+span.cm-strikethrough { text-decoration: line-through; }
+.cm-tw-syntaxerror { color: rgb(255, 255, 255); background-color: rgb(153, 0, 0); }
+.cm-tw-deleted { text-decoration: line-through; }
+.cm-tw-header5 { font-weight: 700; }
+.cm-tw-listitem:first-child { padding-left: 10px; }
+.cm-tw-box { border-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-color: inherit; border-top-width: 0px !important; }
+.cm-tw-underline { text-decoration: underline; }
+@media print {
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+</style>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&amp;subset=latin,latin-ext' type='text/css' />
+<style type='text/css'  id="style-theme_css">:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', 'SF Pro', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    pre {
+        page-break-inside: avoid;
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.mac-os #write{
+    caret-color: AccentColor;
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+}
+</style>
+<style type='text/css'  id="style-lp">ol, ul {padding-left: 40px}</style>
+
+<title>保険料率算出シミュレーション関数作成のためのデータ分析について</title>
+</head>
+<body class='typora-export'><div class='typora-export-content'>
+<div id='write'  class=''><h2 id='1-pdfから読み取った保険料率の算定構造'><span>1. PDFから読み取った保険料率の算定構造</span></h2><p><span>保険料率算出シミュレーション関数作成のためのデータ分析について</span></p><p><span>参考資料</span>
+<span>令和7年度分</span>
+<a href='https://www.kyoukaikenpo.or.jp/'><span>協会けんぽTOP</span></a><span>→ </span><a href='https://www.kyoukaikenpo.or.jp/disclosure'><span>情報公開</span></a><span>→</span><a href='[https://www.kyoukaikenpo.or.jp/disclosure/committee/](https://www.kyoukaikenpo.or.jp/disclosure/committee/r06/)'><span>運営委員 令和06年度</span></a><span>→ </span><a href='https://www.kyoukaikenpo.or.jp/disclosure/committee/r06/document_1744.html'><span>第134回全国健康保険協会運営委員会 資料</span></a><span>→</span><a href='https://www.kyoukaikenpo.or.jp/assets/2025012902.pdf'><span>02 資料1-2 令和7年度都道府県単位保険料率について（案）</span></a><span>](</span><a href='https://www.kyoukaikenpo.or.jp/assets/2025012902.pdf' target='_blank' class='url'>https://www.kyoukaikenpo.or.jp/assets/2025012902.pdf</a><span>)</span>
+<span>令和8年度分</span>
+<a href='https://www.kyoukaikenpo.or.jp/'><span>協会けんぽTOP</span></a><span>→ </span><a href='https://www.kyoukaikenpo.or.jp/disclosure'><span>情報公開</span></a><span>→</span><a href='https://www.kyoukaikenpo.or.jp/disclosure/committee/'><span>運営委員会 令和07年度</span></a><span>→ </span><a href='https://www.kyoukaikenpo.or.jp/disclosure/committee/r07/document_1742.html'><span>第140回全国健康保険協会運営委員会 資料</span></a><span>→</span><a href='https://www.kyoukaikenpo.or.jp/assets/2026012902_02.pdf'><span>02 資料1-2 令和8年度都道府県単位保険料率について（案）</span></a></p><p><span>2つのPDF（令和7年度・令和8年度）から、都道府県単位保険料率は以下のように算定されています。</span></p><h3 id='算定式'><span>算定式</span></h3><pre class="md-fences md-end-block ty-contain-cm modeLoaded" spellcheck="false" lang=""><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang=""><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 9.52344px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">最終保険料率 = 地域差反映保険料率 + 共通料率 + 精算分 + インセンティブ分</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 23px;"></div><div class="CodeMirror-gutters" style="display: none; height: 23px;"></div></div></div></pre><p><span>具体的には：</span></p><div class="md-diagram-panel md-fences-adv-panel" lang="mermaid"><svg id="mermaidChart0" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart mermaid-svg" style="max-width: 747.05859375px;" viewBox="0 0 747.05859375 686" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#mermaidChart0{font-family:sans-serif;font-size:16px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaidChart0 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaidChart0 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaidChart0 .error-icon{fill:#552222;}#mermaidChart0 .error-text{fill:#552222;stroke:#552222;}#mermaidChart0 .edge-thickness-normal{stroke-width:1px;}#mermaidChart0 .edge-thickness-thick{stroke-width:3.5px;}#mermaidChart0 .edge-pattern-solid{stroke-dasharray:0;}#mermaidChart0 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaidChart0 .edge-pattern-dashed{stroke-dasharray:3;}#mermaidChart0 .edge-pattern-dotted{stroke-dasharray:2;}#mermaidChart0 .marker{fill:#333333;stroke:#333333;}#mermaidChart0 .marker.cross{stroke:#333333;}#mermaidChart0 svg{font-family:sans-serif;font-size:16px;}#mermaidChart0 p{margin:0;}#mermaidChart0 .label{font-family:sans-serif;color:#333;}#mermaidChart0 .cluster-label text{fill:#333;}#mermaidChart0 .cluster-label span{color:#333;}#mermaidChart0 .cluster-label span p{background-color:transparent;}#mermaidChart0 .label text,#mermaidChart0 span{fill:#333;color:#333;}#mermaidChart0 .node rect,#mermaidChart0 .node circle,#mermaidChart0 .node ellipse,#mermaidChart0 .node polygon,#mermaidChart0 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#mermaidChart0 .rough-node .label text,#mermaidChart0 .node .label text,#mermaidChart0 .image-shape .label,#mermaidChart0 .icon-shape .label{text-anchor:middle;}#mermaidChart0 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaidChart0 .rough-node .label,#mermaidChart0 .node .label,#mermaidChart0 .image-shape .label,#mermaidChart0 .icon-shape .label{text-align:center;}#mermaidChart0 .node.clickable{cursor:pointer;}#mermaidChart0 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#mermaidChart0 .arrowheadPath{fill:#333333;}#mermaidChart0 .edgePath .path{stroke:#333333;stroke-width:2.0px;}#mermaidChart0 .flowchart-link{stroke:#333333;fill:none;}#mermaidChart0 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#mermaidChart0 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#mermaidChart0 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#mermaidChart0 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#mermaidChart0 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#mermaidChart0 .cluster text{fill:#333;}#mermaidChart0 .cluster span{color:#333;}#mermaidChart0 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:sans-serif;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#mermaidChart0 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#mermaidChart0 rect.text{fill:none;stroke-width:0;}#mermaidChart0 .icon-shape,#mermaidChart0 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#mermaidChart0 .icon-shape p,#mermaidChart0 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#mermaidChart0 .icon-shape .label rect,#mermaidChart0 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#mermaidChart0 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaidChart0 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaidChart0 :root{--mermaid-alt-font-family:sans-serif;}</style><g><marker id="mermaidChart0_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaidChart0_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaidChart0_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaidChart0_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaidChart0_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaidChart0_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M106.766,86L72,111L72,132" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MTA2Ljc2NTYyNSwieSI6ODZ9LHsieCI6NzIsInkiOjExMX0seyJ4Ijo3MiwieSI6MTM2fV0=" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M215.234,86L250,111L250,132" id="L_A_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_C_0" data-points="W3sieCI6MjE1LjIzNDM3NSwieSI6ODZ9LHsieCI6MjUwLCJ5IjoxMTF9LHsieCI6MjUwLCJ5IjoxMzZ9XQ==" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M72,190L72,215L103.518,237.665" id="L_B_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_D_0" data-points="W3sieCI6NzIsInkiOjE5MH0seyJ4Ijo3MiwieSI6MjE1fSx7IngiOjEwNi43NjU2MjUsInkiOjI0MH1d" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M250,190L250,215L218.482,237.665" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6MjUwLCJ5IjoxOTB9LHsieCI6MjUwLCJ5IjoyMTV9LHsieCI6MjE1LjIzNDM3NSwieSI6MjQwfV0=" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M161,318L161,343L214.372,366.394" id="L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6MTYxLCJ5IjozMTh9LHsieCI6MTYxLCJ5IjozNDN9LHsieCI6MjE4LjAzNTgyNzYzNjcxODc1LCJ5IjozNjh9XQ==" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M453.023,318L453.023,343L399.651,366.394" id="L_F_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_E_0" data-points="W3sieCI6NDUzLjAyMzQzNzUsInkiOjMxOH0seyJ4Ijo0NTMuMDIzNDM3NSwieSI6MzQzfSx7IngiOjM5NS45ODc2MDk4NjMyODEyNSwieSI6MzY4fV0=" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M307.012,446L307.012,471L349.82,494.1" id="L_E_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_G_0" data-points="W3sieCI6MzA3LjAxMTcxODc1LCJ5Ijo0NDZ9LHsieCI6MzA3LjAxMTcxODc1LCJ5Ijo0NzF9LHsieCI6MzUzLjM0MDQ1NDEwMTU2MjUsInkiOjQ5Nn1d" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M544.215,434L544.215,471L501.406,494.1" id="L_H_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_G_0" data-points="W3sieCI6NTQ0LjIxNDg0Mzc1LCJ5Ijo0MzR9LHsieCI6NTQ0LjIxNDg0Mzc1LCJ5Ijo0NzF9LHsieCI6NDk3Ljg4NjEwODM5ODQzNzUsInkiOjQ5Nn1d" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M425.613,574L425.613,599L474.54,622.281" id="L_G_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_I_0" data-points="W3sieCI6NDI1LjYxMzI4MTI1LCJ5Ijo1NzR9LHsieCI6NDI1LjYxMzI4MTI1LCJ5Ijo1OTl9LHsieCI6NDc4LjE1MjM0Mzc1LCJ5Ijo2MjR9XQ==" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path><path d="M644.176,574L644.176,599L595.249,622.281" id="L_J_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_I_0" data-points="W3sieCI6NjQ0LjE3NTc4MTI1LCJ5Ijo1NzR9LHsieCI6NjQ0LjE3NTc4MTI1LCJ5Ijo1OTl9LHsieCI6NTkxLjYzNjcxODc1LCJ5Ijo2MjR9XQ==" marker-end="url(#mermaidChart0_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_A_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_F_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_G_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_H_G_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_G_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_J_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(161, 47)"><rect class="basic label-container" style="" x="-111.765625" y="-39" width="223.53125" height="78"></rect><g class="label" style="" transform="translate(-81.765625, -24)"><rect></rect><foreignObject width="163.53125" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>調整前の所要保険料率<br/>（医療給付費ベース）</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(72, 163)"><rect class="basic label-container" style="" x="-64" y="-27" width="128" height="54"></rect><g class="label" style="" transform="translate(-34, -12)"><rect></rect><foreignObject width="68" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>年齢調整</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-3" transform="translate(250, 163)"><rect class="basic label-container" style="" x="-64" y="-27" width="128" height="54"></rect><g class="label" style="" transform="translate(-34, -12)"><rect></rect><foreignObject width="68" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>所得調整</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-5" transform="translate(161, 279)"><rect class="basic label-container" style="" x="-123.7578125" y="-39" width="247.515625" height="78"></rect><g class="label" style="" transform="translate(-93.7578125, -24)"><rect></rect><foreignObject width="187.515625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>地域差反映後の<br/>医療給付費保険料率(a+b)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E-9" transform="translate(307.01171875, 407)"><rect class="basic label-container" style="" x="-93.1171875" y="-39" width="186.234375" height="78"></rect><g class="label" style="" transform="translate(-63.1171875, -24)"><rect></rect><foreignObject width="126.234375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>所要保険料率<br/>(a+b) + 共通料率</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-10" transform="translate(453.0234375, 279)"><rect class="basic label-container" style="" x="-118.265625" y="-39" width="236.53125" height="78"></rect><g class="label" style="" transform="translate(-88.265625, -24)"><rect></rect><foreignObject width="176.53125" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>共通料率（全国一律）<br/>R7: 4.65% / R8: 4.55%</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-13" transform="translate(425.61328125, 535)"><rect class="basic label-container" style="" x="-73.6796875" y="-39" width="147.359375" height="78"></rect><g class="label" style="" transform="translate(-43.6796875, -24)"><rect></rect><foreignObject width="87.359375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>保険料率(c)<br/>精算反映後</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-14" transform="translate(544.21484375, 407)"><rect class="basic label-container" style="" x="-94.0859375" y="-27" width="188.171875" height="54"></rect><g class="label" style="" transform="translate(-64.0859375, -12)"><rect></rect><foreignObject width="128.171875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>前々年度の精算分</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-17" transform="translate(534.89453125, 651)"><rect class="basic label-container" style="" x="-90.3203125" y="-27" width="180.640625" height="54"></rect><g class="label" style="" transform="translate(-60.3203125, -12)"><rect></rect><foreignObject width="120.640625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>最終保険料率(d)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-18" transform="translate(644.17578125, 535)"><rect class="basic label-container" style="" x="-94.8828125" y="-39" width="189.765625" height="78"></rect><g class="label" style="" transform="translate(-64.8828125, -24)"><rect></rect><foreignObject width="129.765625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>インセンティブ制度<br/>（5つの指標）</p></span></div></foreignObject></g></g></g></g></g></svg></div><h3 id='共通料率の内訳全国一律'><span>共通料率の内訳（全国一律）</span></h3><figure class='table-figure'><table><thead><tr><th><span>項目</span></th><th style='text-align:right;' ><span>R7年度</span></th><th style='text-align:right;' ><span>R8年度</span></th></tr></thead><tbody><tr><td><span>傷病手当金等（現金給付費）</span></td><td style='text-align:right;' ><span>0.51%</span></td><td style='text-align:right;' ><span>0.52%</span></td></tr><tr><td><span>前期高齢者納付金等</span></td><td style='text-align:right;' ><span>3.38%</span></td><td style='text-align:right;' ><span>3.25%</span></td></tr><tr><td><span>保健事業費等</span></td><td style='text-align:right;' ><span>0.78%</span></td><td style='text-align:right;' ><span>0.83%</span></td></tr><tr><td><span>その他収入</span></td><td style='text-align:right;' ><span>▲0.03%</span></td><td style='text-align:right;' ><span>▲0.04%</span></td></tr><tr><td><strong><span>合計</span></strong></td><td style='text-align:right;' ><strong><span>4.65%</span></strong></td><td style='text-align:right;' ><strong><span>4.55%</span></strong></td></tr></tbody></table></figure><h3 id='保険料率の構成要素一覧'><span>保険料率の構成要素一覧</span></h3><figure class='table-figure'><table><thead><tr><th><span>#</span></th><th><span>構成要素</span></th><th><span>性質</span></th><th><span>データの入手性</span></th></tr></thead><tbody><tr><td><span>1</span></td><td><strong><span>医療給付費（調整前所要保険料率）</span></strong></td><td><span>都道府県ごとに異なる</span></td><td><span>公開データあり</span></td></tr><tr><td><span>2</span></td><td><strong><span>年齢調整</span></strong></td><td><span>年齢構成の差を補正</span></td><td><span>算出可能</span></td></tr><tr><td><span>3</span></td><td><strong><span>所得調整</span></strong></td><td><span>所得水準の差を補正</span></td><td><span>算出可能</span></td></tr><tr><td><span>4</span></td><td><strong><span>共通料率</span></strong></td><td><span>全国一律</span></td><td><span>PDF記載</span></td></tr><tr><td><span>5</span></td><td><strong><span>前々年度精算分</span></strong></td><td><span>都道府県ごとに異なる</span></td><td><span>PDF表から読取可</span></td></tr><tr><td><span>6</span></td><td><strong><span>インセンティブ分</span></strong></td><td><span>5つの指標から算出</span></td><td><span>既存データ</span></td></tr></tbody></table></figure><div class="md-alert md-alert-important important"><p><span class='md-alert-text md-alert-text-important'><svg viewBox="0 0 16 16" version="1.1" width="1em" height="1em" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</span><br><strong><span>5つの指標（インセンティブ制度）は保険料率全体のうち、±0.01%～0.16%程度の影響しか持ちません。</span></strong>
+<span>保険料率の大部分は「医療給付費の地域差」「年齢構成」「所得水準」で決定されています。</span>
+<span>これが前回の重回帰分析でR²=0.16しか出なかった根本的な理由です。</span></p></div><hr /><figure class='table-figure'><table><thead><tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr></thead><tbody><tr><td><span>年度</span></td><td><span>支部名</span></td><td><span>翌々年度保険料率</span></td><td><span>調整前所要保険料率</span></td><td><span>年齢調整</span></td><td><span>所得調整</span></td><td><span>精算分</span></td><td><span>特定健診等</span></td><td><span>特定保健指導</span></td><td><span>対象者減少率</span></td><td><span>受診勧奨</span></td><td><span>後発医薬品</span></td></tr><tr><td><span>2</span></td><td><span>北海道</span></td><td><span>10.39</span></td><td><span>6.26</span></td><td><span>-0.31</span></td><td><span>-0.26</span></td><td><span>-0.03</span></td><td><span>45</span></td><td><span>9.8</span></td><td><span>31.7</span></td><td><span>9.2</span></td><td><span>81.5</span></td></tr><tr><td><span>2</span></td><td><span>青森</span></td><td><span>10.03</span></td><td><span>6.37</span></td><td><span>-0.3</span></td><td><span>-0.81</span></td><td><span>0.04</span></td><td><span>55.8</span></td><td><span>17.6</span></td><td><span>31.4</span></td><td><span>9.2</span></td><td><span>82.1</span></td></tr><tr><td><span>2</span></td><td><span>岩手</span></td><td><span>9.91</span></td><td><span>6.01</span></td><td><span>-0.32</span></td><td><span>-0.57</span></td><td><span>0.06</span></td><td><span>55.7</span></td><td><span>14.5</span></td><td><span>31.4</span></td><td><span>9</span></td><td><span>85</span></td></tr><tr><td><span>2</span></td><td><span>宮城</span></td><td><span>10.18</span></td><td><span>5.91</span></td><td><span>-0.17</span></td><td><span>-0.32</span></td><td><span>0.07</span></td><td><span>58.5</span></td><td><span>22.9</span></td><td><span>31.6</span></td><td><span>11.6</span></td><td><span>83.1</span></td></tr><tr><td><span>2</span></td><td><span>秋田</span></td><td><span>10.27</span></td><td><span>6.99</span></td><td><span>-0.63</span></td><td><span>-0.8</span></td><td><span>0.02</span></td><td><span>55.9</span></td><td><span>24.4</span></td><td><span>33.2</span></td><td><span>9</span></td><td><span>81.7</span></td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table></figure><h2 id='2-予測に必要な追加データ説明変数候補'><span>2. 予測に必要な追加データ（説明変数候補）</span></h2><p><span>PDFの算定構造から、以下のデータを追加すれば予測精度が大幅に向上すると考えられます。</span></p><h3 id='必須レベル影響大'><span>必須レベル（影響大）</span></h3><figure class='table-figure'><table><thead><tr><th><span>変数</span></th><th><span>説明</span></th><th><span>データ源</span></th></tr></thead><tbody><tr><td><strong><span>1人当たり医療給付費</span></strong></td><td><span>保険料率の最大の決定要因</span></td><td><span>協会けんぽ事業年報</span></td></tr><tr><td><strong><span>平均年齢</span></strong><span> or </span><strong><span>年齢構成割合</span></strong></td><td><span>年齢調整の基礎データ</span></td><td><span>総務省統計</span></td></tr><tr><td><strong><span>1人当たり平均報酬額</span></strong></td><td><span>所得調整の基礎データ</span></td><td><span>協会けんぽ事業年報</span></td></tr><tr><td><strong><span>前期高齢者比率</span></strong></td><td><span>納付金に影響</span></td><td><span>後期高齢者医療制度資料</span></td></tr></tbody></table></figure><h3 id='推奨レベル影響中'><span>推奨レベル（影響中）</span></h3><figure class='table-figure'><table><thead><tr><th><span>変数</span></th><th><span>説明</span></th><th><span>データ源</span></th></tr></thead><tbody><tr><td><strong><span>前々年度収支差</span></strong></td><td><span>精算分の基礎</span></td><td><span>協会けんぽ決算</span></td></tr><tr><td><strong><span>被保険者数</span></strong></td><td><span>規模効果</span></td><td><span>協会けんぽ事業年報</span></td></tr><tr><td><strong><span>平均標準報酬月額</span></strong></td><td><span>所得水準の代替指標</span></td><td><span>協会けんぽ事業年報</span></td></tr><tr><td><strong><span>入院外医療費</span></strong><span> / </span><strong><span>入院医療費</span></strong></td><td><span>医療費構成の違い</span></td><td><span>厚労省統計</span></td></tr></tbody></table></figure><h3 id='参考レベル影響小中'><span>参考レベル（影響小〜中）</span></h3><figure class='table-figure'><table><thead><tr><th><span>変数</span></th><th><span>説明</span></th></tr></thead><tbody><tr><td><span>病床数（人口あたり）</span></td><td><span>医療供給側の要因</span></td></tr><tr><td><span>高齢化率（65歳以上割合）</span></td><td><span>年齢構成のシンプルな代替</span></td></tr><tr><td><span>1人あたり県民所得</span></td><td><span>所得水準の代替</span></td></tr></tbody></table></figure><hr /><h2 id='3-分析手法の候補'><span>3. 分析手法の候補</span></h2><figure class='table-figure'><table><thead><tr><th><span>手法</span></th><th><span>特徴</span></th><th><span>強み</span></th><th><span>弱み</span></th></tr></thead><tbody><tr><td><strong><span>重回帰分析（OLS）</span></strong></td><td><span>線形モデル</span></td><td><span>解釈性が高い、係数の意味が明確</span></td><td><span>非線形関係を捉えられない</span></td></tr><tr><td><strong><span>Ridge/Lasso回帰</span></strong></td><td><span>正則化付き線形モデル</span></td><td><span>多重共線性に強い、変数選択</span></td><td><span>線形の制約は同じ</span></td></tr><tr><td><strong><span>ElasticNet</span></strong></td><td><span>Ridge+Lassoの組合せ</span></td><td><span>バランスの良い正則化</span></td><td><span>ハイパーパラメータが増える</span></td></tr><tr><td><strong><span>ランダムフォレスト</span></strong></td><td><span>アンサンブル決定木</span></td><td><span>非線形対応、過学習しにくい</span></td><td><span>解釈がやや困難</span></td></tr><tr><td><strong><span>XGBoost</span></strong></td><td><span>勾配ブースティング</span></td><td><span>高精度、欠損値に強い</span></td><td><span>過学習のリスク、チューニング必要</span></td></tr><tr><td><strong><span>LightGBM</span></strong></td><td><span>高速ブースティング</span></td><td><span>XGBoostより高速、大規模対応</span></td><td><span>少量データでは過学習リスク</span></td></tr><tr><td><strong><span>SVR（サポートベクター回帰）</span></strong></td><td><span>カーネル法</span></td><td><span>非線形対応、汎化性能</span></td><td><span>スケーリング必要、解釈困難</span></td></tr></tbody></table></figure><hr /><h2 id='4-モデル評価指標★本題★'><span>4. モデル評価指標（★本題★）</span></h2><h3 id='4-1-精度指標'><span>4-1. 精度指標</span></h3><figure class='table-figure'><table><thead><tr><th><span>指標</span></th><th><span>数式概要</span></th><th><span>意味</span></th><th style='text-align:center;' ><span>推奨度</span></th></tr></thead><tbody><tr><td><strong><span>RMSE</span></strong><span>（二乗平均平方根誤差）</span></td><td><span>√(Σ(y-ŷ)²/n)</span></td><td><span>予測誤差の標準偏差。外れ値に敏感</span></td><td style='text-align:center;' ><span>★★★</span></td></tr><tr><td><strong><span>MAE</span></strong><span>（平均絶対誤差）</span></td><td><span>Σ</span><span>|</span><span>y-ŷ</span><span>|</span><span>/n</span></td><td><span>予測誤差の平均。直感的</span></td><td style='text-align:center;' ><span>★★★</span></td></tr><tr><td><strong><span>R²</span></strong><span>（決定係数）</span></td><td><span>1 - SS_res/SS_tot</span></td><td><span>説明力の割合。0〜1</span></td><td style='text-align:center;' ><span>★★★</span></td></tr><tr><td><strong><span>MAPE</span></strong><span>（平均絶対パーセント誤差）</span></td><td><span>Σ</span><span>|</span><span>y-ŷ</span><span>|</span><span>/y × 100 / n</span></td><td><span>パーセントでの誤差。実務的</span></td><td style='text-align:center;' ><span>★★☆</span></td></tr><tr><td><strong><span>調整済みR²</span></strong></td><td><span>変数数で補正したR²</span></td><td><span>モデルの複雑さを考慮</span></td><td style='text-align:center;' ><span>★★☆</span></td></tr></tbody></table></figure><h3 id='4-2-交差検証で使うべき手法'><span>4-2. 交差検証で使うべき手法</span></h3><p><span>データが235件（47都道府県×5年度）と</span><strong><span>少量</span></strong><span>なので、交差検証が非常に重要です。</span></p><figure class='table-figure'><table><thead><tr><th><span>手法</span></th><th><span>説明</span></th><th style='text-align:center;' ><span>本データへの適合性</span></th></tr></thead><tbody><tr><td><strong><span>K-Fold CV（k=5 or 10）</span></strong></td><td><span>データをk分割し、各分割で検証</span></td><td style='text-align:center;' ><span>◎</span></td></tr><tr><td><strong><span>Leave-One-Out CV</span></strong></td><td><span>1件ずつ抜いて検証。少量データ向き</span></td><td style='text-align:center;' ><span>○</span></td></tr><tr><td><strong><span>GroupKFold（都道府県グループ）</span></strong></td><td><span>同一都道府県が訓練・テストに混ざらない</span></td><td style='text-align:center;' ><span>◎◎（最推奨）</span></td></tr><tr><td><strong><span>TimeSeriesSplit</span></strong></td><td><span>時系列を考慮した分割</span></td><td style='text-align:center;' ><span>○</span></td></tr></tbody></table></figure><div class="md-alert md-alert-warning warning"><p><span class='md-alert-text md-alert-text-warning'><svg viewBox="0 0 16 16" version="1.1" width="1em" height="1em" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</span><br><strong><span>GroupKFoldを強く推奨します。</span></strong><span> 通常のK-Foldでは「北海道の年度2,3,4を学習→年度5を予測」ではなく、「北海道の年度2が訓練データに入り、北海道の年度3が検証データに入る」というデータ漏洩が起こり得ます。都道府県ごとにグループ化することで、真の汎化性能を測定できます。</span></p></div><h3 id='4-3-推奨する評価フレームワーク'><span>4-3. 推奨する評価フレームワーク</span></h3><pre class="md-fences md-end-block ty-contain-cm modeLoaded" spellcheck="false" lang=""><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang=""><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 9.52344px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">1. 各モデルに対して GroupKFold（グループ=都道府県） で交差検証</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">2. 以下の指標を全モデルで計算:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; - RMSE（主要評価指標）</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; - MAE（補助指標）</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; - R²（説明力）</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; - MAPE（実務的解釈用）</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">3. ベストモデルの選定基準:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; → RMSEが最小のモデル（同等ならMAEも参照）</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">4. 最終チェック:</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; → 学習データのRMSE vs テストデータのRMSE の差で過学習を確認</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 230px;"></div><div class="CodeMirror-gutters" style="display: none; height: 230px;"></div></div></div></pre><h3 id='4-4-本データ特有の注意点'><span>4-4. 本データ特有の注意点</span></h3><figure class='table-figure'><table><thead><tr><th><span>ポイント</span></th><th><span>説明</span></th></tr></thead><tbody><tr><td><strong><span>データ数が少ない（235件）</span></strong></td><td><span>XGBoost等の複雑なモデルは過学習しやすい。正則化・早期停止が必須</span></td></tr><tr><td><strong><span>パネルデータ構造</span></strong></td><td><span>同一都道府県の時系列データ → GroupKFoldで対策</span></td></tr><tr><td><strong><span>目的変数の範囲が狭い</span></strong></td><td><span>保険料率は9.2%〜11.0%に集中 → MAPEよりRMSEが適切</span></td></tr><tr><td><strong><span>変数の追加で精度は大きく変わる</span></strong></td><td><span>モデルの種類よりも</span><strong><span>特徴量エンジニアリング</span></strong><span>が重要</span></td></tr></tbody></table></figure><hr /><h2 id='5-具体的な進め方の提案'><span>5. 具体的な進め方の提案</span></h2><div class="md-diagram-panel md-fences-adv-panel" lang="mermaid"><svg id="mermaidChart1" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart mermaid-svg" style="max-width: 1541.625px;" viewBox="0 0 1541.625 94" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#mermaidChart1{font-family:sans-serif;font-size:16px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaidChart1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaidChart1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaidChart1 .error-icon{fill:#552222;}#mermaidChart1 .error-text{fill:#552222;stroke:#552222;}#mermaidChart1 .edge-thickness-normal{stroke-width:1px;}#mermaidChart1 .edge-thickness-thick{stroke-width:3.5px;}#mermaidChart1 .edge-pattern-solid{stroke-dasharray:0;}#mermaidChart1 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaidChart1 .edge-pattern-dashed{stroke-dasharray:3;}#mermaidChart1 .edge-pattern-dotted{stroke-dasharray:2;}#mermaidChart1 .marker{fill:#333333;stroke:#333333;}#mermaidChart1 .marker.cross{stroke:#333333;}#mermaidChart1 svg{font-family:sans-serif;font-size:16px;}#mermaidChart1 p{margin:0;}#mermaidChart1 .label{font-family:sans-serif;color:#333;}#mermaidChart1 .cluster-label text{fill:#333;}#mermaidChart1 .cluster-label span{color:#333;}#mermaidChart1 .cluster-label span p{background-color:transparent;}#mermaidChart1 .label text,#mermaidChart1 span{fill:#333;color:#333;}#mermaidChart1 .node rect,#mermaidChart1 .node circle,#mermaidChart1 .node ellipse,#mermaidChart1 .node polygon,#mermaidChart1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#mermaidChart1 .rough-node .label text,#mermaidChart1 .node .label text,#mermaidChart1 .image-shape .label,#mermaidChart1 .icon-shape .label{text-anchor:middle;}#mermaidChart1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaidChart1 .rough-node .label,#mermaidChart1 .node .label,#mermaidChart1 .image-shape .label,#mermaidChart1 .icon-shape .label{text-align:center;}#mermaidChart1 .node.clickable{cursor:pointer;}#mermaidChart1 .root .anchor path{fill:#333333!important;stroke-width:0;stroke:#333333;}#mermaidChart1 .arrowheadPath{fill:#333333;}#mermaidChart1 .edgePath .path{stroke:#333333;stroke-width:2.0px;}#mermaidChart1 .flowchart-link{stroke:#333333;fill:none;}#mermaidChart1 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#mermaidChart1 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#mermaidChart1 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#mermaidChart1 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#mermaidChart1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#mermaidChart1 .cluster text{fill:#333;}#mermaidChart1 .cluster span{color:#333;}#mermaidChart1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:sans-serif;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#mermaidChart1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#mermaidChart1 rect.text{fill:none;stroke-width:0;}#mermaidChart1 .icon-shape,#mermaidChart1 .image-shape{background-color:rgba(232,232,232, 0.8);text-align:center;}#mermaidChart1 .icon-shape p,#mermaidChart1 .image-shape p{background-color:rgba(232,232,232, 0.8);padding:2px;}#mermaidChart1 .icon-shape .label rect,#mermaidChart1 .image-shape .label rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#mermaidChart1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaidChart1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaidChart1 :root{--mermaid-alt-font-family:sans-serif;}</style><g><marker id="mermaidChart1_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaidChart1_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaidChart1_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaidChart1_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaidChart1_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaidChart1_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M248,47L273,47L294,47" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MjQ4LCJ5Ijo0N30seyJ4IjoyNzMsInkiOjQ3fSx7IngiOjI5OCwieSI6NDd9XQ==" marker-end="url(#mermaidChart1_flowchart-v2-pointEnd)"></path><path d="M475.469,47L500.469,47L521.469,47" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NDc1LjQ2ODc1LCJ5Ijo0N30seyJ4Ijo1MDAuNDY4NzUsInkiOjQ3fSx7IngiOjUyNS40Njg3NSwieSI6NDd9XQ==" marker-end="url(#mermaidChart1_flowchart-v2-pointEnd)"></path><path d="M717.594,47L742.594,47L763.594,47" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6NzE3LjU5Mzc1LCJ5Ijo0N30seyJ4Ijo3NDIuNTkzNzUsInkiOjQ3fSx7IngiOjc2Ny41OTM3NSwieSI6NDd9XQ==" marker-end="url(#mermaidChart1_flowchart-v2-pointEnd)"></path><path d="M992.688,47L1017.688,47L1038.688,47" id="L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6OTkyLjY4NzUsInkiOjQ3fSx7IngiOjEwMTcuNjg3NSwieSI6NDd9LHsieCI6MTA0Mi42ODc1LCJ5Ijo0N31d" marker-end="url(#mermaidChart1_flowchart-v2-pointEnd)"></path><path d="M1259.781,47L1284.781,47L1305.781,47" id="L_E_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MTI1OS43ODEyNSwieSI6NDd9LHsieCI6MTI4NC43ODEyNSwieSI6NDd9LHsieCI6MTMwOS43ODEyNSwieSI6NDd9XQ==" marker-end="url(#mermaidChart1_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(128, 47)"><rect class="basic label-container" style="" x="-120" y="-39" width="240" height="78"></rect><g class="label" style="" transform="translate(-90, -24)"><rect></rect><foreignObject width="180" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>① 追加データ収集<br/>医療給付費・年齢・所得等</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(386.734375, 47)"><rect class="basic label-container" style="" x="-88.734375" y="-39" width="177.46875" height="78"></rect><g class="label" style="" transform="translate(-58.734375, -24)"><rect></rect><foreignObject width="117.46875" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>② データ結合<br/>TSVファイル整備</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-3" transform="translate(621.53125, 47)"><rect class="basic label-container" style="" x="-96.0625" y="-39" width="192.125" height="78"></rect><g class="label" style="" transform="translate(-66.0625, -24)"><rect></rect><foreignObject width="132.125" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>③ ベースライン<br/>重回帰分析（OLS）</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-5" transform="translate(880.140625, 47)"><rect class="basic label-container" style="" x="-112.546875" y="-39" width="225.09375" height="78"></rect><g class="label" style="" transform="translate(-82.546875, -24)"><rect></rect><foreignObject width="165.09375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>④ 複数モデル比較<br/>Ridge, XGBoost, RF等</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E-7" transform="translate(1151.234375, 47)"><rect class="basic label-container" style="" x="-108.546875" y="-39" width="217.09375" height="78"></rect><g class="label" style="" transform="translate(-78.546875, -24)"><rect></rect><foreignObject width="157.09375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>⑤ 評価・選定<br/>GroupKFold + RMSE</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-9" transform="translate(1421.703125, 47)"><rect class="basic label-container" style="" x="-111.921875" y="-39" width="223.84375" height="78"></rect><g class="label" style="" transform="translate(-81.921875, -24)"><rect></rect><foreignObject width="163.84375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>⑥ 最終モデル<br/>ハイパーパラメータ調整</p></span></div></foreignObject></g></g></g></g></g></svg></div><div class="md-alert md-alert-tip tip"><p><span class='md-alert-text md-alert-text-tip'><svg viewBox="0 0 16 16" version="1.1" width="1em" height="1em" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</span><br><strong><span>最も精度向上に寄与するのは「モデルの種類を変えること」ではなく「説明変数を追加すること」です。</span></strong>
+<span>特に「1人当たり医療給付費」と「平均報酬額」を加えるだけで、R²は0.16→0.7以上に大幅改善が期待できます。</span></p></div><hr /><h2 id='6-まとめ'><span>6. まとめ</span></h2><figure class='table-figure'><table><thead><tr><th><span>質問</span></th><th><span>回答</span></th></tr></thead><tbody><tr><td><span>どの評価指標？</span></td><td><strong><span>RMSE</span></strong><span>を主指標、MAE・R²を補助指標</span></td></tr><tr><td><span>どの交差検証？</span></td><td><strong><span>GroupKFold</span></strong><span>（都道府県をグループ単位）</span></td></tr><tr><td><span>何が最も重要？</span></td><td><span>モデルの種類より</span><strong><span>説明変数の追加</span></strong><span>（医療給付費、年齢構成、所得水準）</span></td></tr><tr><td><span>過学習の確認は？</span></td><td><span>学習RMSE vs テストRMSEの差を確認</span></td></tr></tbody></table></figure></div></div>
+</body>
+</html>
