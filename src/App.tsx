@@ -1,18 +1,19 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { KENPO_DATA, KenpoRecord } from "./data";
 
 // 5つの指標の定義
 interface Indicator {
   key: keyof Omit<KenpoRecord, "year" | "branch" | "rate">;
   name: string;
+  description: string; // ユーザー向けの簡単な説明
 }
 
 const INDICATORS: Indicator[] = [
-  { key: "kenshin", name: "特定健診等の実施率" },
-  { key: "shido", name: "特定保健指導の実施率" },
-  { key: "gensho", name: "特定保健指導対象者の減少率" },
-  { key: "kansho", name: "医療機関への受診勧奨率" },
-  { key: "generic", name: "ジェネリック医薬品の使用割合" },
+  { key: "kenshin", name: "特定健診等の実施率", description: "40歳以上の健診受診率" },
+  { key: "shido", name: "特定保健指導の実施率", description: "メタボ等の保健指導率" },
+  { key: "gensho", name: "特定保健指導対象者の減少率", description: "メタボ該当者の改善率" },
+  { key: "kansho", name: "医療機関への受診勧奨率", description: "要治療者への受診促進" },
+  { key: "generic", name: "ジェネリック医薬品の使用割合", description: "後発医薬品の利用率" },
 ];
 
 // OLS重回帰分析によって得られた5つの健康指標の偏回帰係数
@@ -25,12 +26,39 @@ const OLS_COEFFICIENTS = {
   generic: -0.0093,   // ジェネリック医薬品の使用割合が1%上がると、料率が -0.0093% 下がる (強力)
 };
 
+// 浮いた金額の例え話データ
+const FUN_EXAMPLES = [
+  { threshold: 1000, emoji: "☕", text: (n: number) => `コンビニコーヒー 約${Math.floor(n / 150)}杯分` },
+  { threshold: 5000, emoji: "🍿", text: (n: number) => `映画 約${Math.floor(n / 2000)}本分` },
+  { threshold: 20000, emoji: "✈️", text: (n: number) => `国内旅行（日帰り） 約${Math.floor(n / 15000)}回分` },
+  { threshold: 50000, emoji: "💻", text: (n: number) => `新しいタブレット ${Math.floor(n / 40000)}台分` },
+];
+
+// 削減額に応じた例え話を取得
+const getFunExample = (amount: number) => {
+  for (let i = FUN_EXAMPLES.length - 1; i >= 0; i--) {
+    if (amount >= FUN_EXAMPLES[i].threshold) {
+      return { emoji: FUN_EXAMPLES[i].emoji, text: FUN_EXAMPLES[i].text(amount) };
+    }
+  }
+  return null;
+};
+
 export default function App() {
   // --- 状態管理 ---
-  const [selectedYear, setSelectedYear] = useState<number>(6); // 4=2022, 5=2023, 6=2024
-  const [homePref, setHomePref] = useState<string>("長崎"); // お住まいの都道府県の初期値
-  const [selectedPref, setSelectedPref] = useState<string>("佐賀"); // 比較対象都道府県の初期値
-  const [userInsurance, setUserInsurance] = useState<number>(50000); // 現在の支払保険料 (円)
+  const [homePref, setHomePref] = useState<string>("長崎");
+
+  // モード管理（個人 / 会社）
+  const [mode, setMode] = useState<"individual" | "company">("individual");
+
+  // 個人モード: 年収（万円）
+  const [userIncome, setUserIncome] = useState<number>(400);
+
+  // 会社モード: 各入力値
+  const [companyHealthPremium, setCompanyHealthPremium] = useState<number>(500000); // 月額健康保険料(円)
+  const [companyCarePremium, setCompanyCarePremium] = useState<number>(80000);      // 月額介護保険料(円)
+  const [employeeCount, setEmployeeCount] = useState<number>(30);                   // 社員数
+  const [seniorCount, setSeniorCount] = useState<number>(12);                       // 40歳以上の社員数
 
   // 5つのスライダーの変更後の値
   const [sliderVals, setSliderVals] = useState({
@@ -41,41 +69,11 @@ export default function App() {
     generic: 80,
   });
 
-  // ツールチップの状態
-  const [tooltip, setTooltip] = useState<{
-    show: boolean;
-    x: number;
-    y: number;
-    prefName: string;
-    rate: number;
-    kenshin: number;
-    shido: number;
-    gensho: number;
-    kansho: number;
-    generic: number;
-  }>({
-    show: false,
-    x: 0,
-    y: 0,
-    prefName: "",
-    rate: 0,
-    kenshin: 0,
-    shido: 0,
-    gensho: 0,
-    kansho: 0,
-    generic: 0,
-  });
-
-  const chartContainerRef = useRef<HTMLDivElement>(null);
-
   // --- データ取得ヘルパー ---
-  const getYearData = (year: number) => {
-    return KENPO_DATA.filter((r) => r.year === year);
-  };
-
-  const currentYearData = getYearData(selectedYear);
+  // 年度は最新(6=2024)固定
+  const selectedYear = 6;
+  const currentYearData = KENPO_DATA.filter((r) => r.year === selectedYear);
   const homeData = currentYearData.find((r) => r.branch === homePref) || currentYearData[0];
-  const selectedPrefData = currentYearData.find((r) => r.branch === selectedPref) || currentYearData[0];
 
   // 全都道府県の一覧 (セレクトボックス用)
   const allPrefs = Array.from(new Set(KENPO_DATA.filter((r) => r.year === 6).map((r) => r.branch)));
@@ -83,10 +81,7 @@ export default function App() {
   // その年度の各指標における全都道府県の最大値・最小値の計算
   const getIndicatorLimits = (key: keyof Omit<KenpoRecord, "year" | "branch" | "rate">) => {
     const vals = currentYearData.map((r) => Number(r[key]));
-    return {
-      min: Math.min(...vals),
-      max: Math.max(...vals),
-    };
+    return { min: Math.min(...vals), max: Math.max(...vals) };
   };
 
   const limits = {
@@ -108,11 +103,11 @@ export default function App() {
         generic: Number(homeData.generic),
       });
     }
-  }, [homePref, selectedYear]);
+  }, [homePref]);
 
   // --- シミュレーション計算ロジック (OLS重回帰モデルの偏回帰係数を反映) ---
   const calculateSimulation = () => {
-    if (!homeData) return { simulatedRate: 0, simulatedInsurance: 0, deltaInsurance: 0 };
+    if (!homeData) return { simulatedRate: 0, currentYearly: 0, simulatedYearly: 0, deltaYearly: 0, currentMonthly: 0, simulatedMonthly: 0 };
 
     // 各指標における現在値とシミュレーション値の差分（ポイント）を計算
     const deltaKenshin = sliderVals.kenshin - Number(homeData.kenshin);
@@ -122,7 +117,7 @@ export default function App() {
     const deltaGeneric = sliderVals.generic - Number(homeData.generic);
 
     // 回帰係数を掛け合わせ、保険料率の変化幅を算出（改善するとマイナスになる）
-    const totalDelta = 
+    const totalDelta =
       (OLS_COEFFICIENTS.kenshin * deltaKenshin) +
       (OLS_COEFFICIENTS.shido * deltaShido) +
       (OLS_COEFFICIENTS.gensho * deltaGensho) +
@@ -131,90 +126,51 @@ export default function App() {
 
     // シミュレーション後の保険料率 (実数値の範囲に収める)
     const simulatedRate = Math.max(8.0, Math.min(12.0, homeData.rate + totalDelta));
-    // 支払保険料の削減幅計算
-    const simulatedInsurance = Math.round(userInsurance * (simulatedRate / homeData.rate));
-    const deltaInsurance = userInsurance - simulatedInsurance;
+    const rateRatio = simulatedRate / homeData.rate;
+
+    let currentYearly: number;
+    let simulatedYearly: number;
+
+    if (mode === "individual") {
+      // 個人モード: 年収(万円) × 料率 / 2 (労使折半の従業員負担分) → 年額
+      currentYearly = Math.round((userIncome * 10000) * (homeData.rate / 100) / 2);
+      simulatedYearly = Math.round((userIncome * 10000) * (simulatedRate / 100) / 2);
+    } else {
+      // 会社モード: 入力された月額保険料合計をベースに算出
+      const monthlyTotal = companyHealthPremium + companyCarePremium;
+      currentYearly = monthlyTotal * 12;
+      simulatedYearly = Math.round(monthlyTotal * rateRatio * 12);
+    }
+
+    const deltaYearly = currentYearly - simulatedYearly;
+    const currentMonthly = Math.round(currentYearly / 12);
+    const simulatedMonthly = Math.round(simulatedYearly / 12);
 
     return {
       simulatedRate: parseFloat(simulatedRate.toFixed(2)),
-      simulatedInsurance,
-      deltaInsurance,
+      currentYearly,
+      simulatedYearly,
+      deltaYearly,
+      currentMonthly,
+      simulatedMonthly,
     };
   };
 
   const simResult = calculateSimulation();
 
   // 削減か、それとも負担増か
-  const isSaving = simResult.deltaInsurance >= 0;
-  const absDelta = Math.abs(simResult.deltaInsurance);
+  const isSaving = simResult.deltaYearly >= 0;
+  const absDeltaYearly = Math.abs(simResult.deltaYearly);
+  const absDeltaMonthly = Math.round(absDeltaYearly / 12);
 
-  // --- グラフクリック時の連動処理 (お住まいの都道府県は変えずに、5指標のスライダーをクリックされた都道府県の実績値に上書き更新) ---
-  const handleBarClick = (prefName: string) => {
-    setSelectedPref(prefName); // 比較対象のハイライトを更新
-
-    // クリックした都道府県のデータを検索
-    const clickedData = currentYearData.find((r) => r.branch === prefName);
-    if (clickedData) {
-      // 5指標のスライダー値をクリックされた都道府県の現在値で上書き（自動で再シミュレーションが走る）
-      setSliderVals({
-        kenshin: Number(clickedData.kenshin),
-        shido: Number(clickedData.shido),
-        gensho: Number(clickedData.gensho),
-        kansho: Number(clickedData.kansho),
-        generic: Number(clickedData.generic),
-      });
-    }
-  };
-
-  // --- SVGグラフ描画用の設定 ---
-  const chartHeight = 240;
-  const barWidth = 20;
-  const barGap = 6;
-  const paddingLeft = 40;
-  const paddingTop = 20;
-  const paddingBottom = 30;
-  const chartWidth = paddingLeft + (barWidth + barGap) * currentYearData.length + 20;
-
-  // 保険料率のスケール変換用の値 (だいたい 9.0% ~ 11.0% の範囲なので、Y軸の下限を 9.0, 上限を 11.2 にして表現)
-  const yMin = 9.0;
-  const yMax = 11.2;
-
-  const getYCoordinate = (rate: number) => {
-    const range = yMax - yMin;
-    const ratio = (rate - yMin) / range;
-    const availableHeight = chartHeight - paddingTop - paddingBottom;
-    // 上下反転（SVGは上が0なので）
-    return chartHeight - paddingBottom - ratio * availableHeight;
-  };
-
-  // 基準線とシミュレーション線のY座標
-  const homeY = homeData ? getYCoordinate(homeData.rate) : 0;
-  const simY = getYCoordinate(simResult.simulatedRate);
-
-  // ツールチップの表示処理
-  const handleBarMouseMove = (e: React.MouseEvent, record: KenpoRecord) => {
-    if (chartContainerRef.current) {
-      const containerRect = chartContainerRef.current.getBoundingClientRect();
-      setTooltip({
-        show: true,
-        x: e.clientX - containerRect.left + 15,
-        y: e.clientY - containerRect.top - 130,
-        prefName: record.branch,
-        rate: record.rate,
-        kenshin: record.kenshin,
-        shido: record.shido,
-        gensho: record.gensho,
-        kansho: record.kansho,
-        generic: record.generic,
-      });
-    }
-  };
+  // 例え話
+  const funExample = isSaving ? getFunExample(absDeltaYearly) : null;
 
   return (
     <div className="app-container">
-      {/* ==========================================================================
-         ヘッダー（コントロールエリア）
-         ========================================================================== */}
+      {/* ================================================================
+         ヘッダー
+         ================================================================ */}
       <header className="app-header">
         <div className="header-title-area">
           <svg className="header-logo-svg" viewBox="0 0 560.96 216.87" aria-label="ケンポー団">
@@ -247,462 +203,286 @@ export default function App() {
             </g>
             <text className="cls-1" transform="translate(68.16 192.04) scale(.84) skewX(-33.05)"><tspan className="cls-3" x="0" y="0">K</tspan><tspan className="cls-5" x="10.14" y="0">en</tspan><tspan className="cls-7" x="28.01" y="0">k</tspan><tspan className="cls-4" x="35.86" y="0">ou Estimation </tspan><tspan className="cls-2" x="140.24" y="0">N</tspan><tspan className="cls-5" x="153.68" y="0">agasaki P</tspan><tspan className="cls-6" x="225.78" y="0">r</tspan><tspan className="cls-4" x="231.96" y="0">oject Organization</tspan></text>
           </svg>
-          <h1 className="header-title">保険料削減シミュレーター</h1>
-        </div>
-        <div className="header-controls">
-          <div className="control-group">
-            <span className="control-label">対象年度</span>
-            <select
-              className="custom-select"
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
-            >
-              <option value={4}>2022年度（令和4年）</option>
-              <option value={5}>2023年度（令和5年）</option>
-              <option value={6}>2024年度（令和6年）</option>
-            </select>
-          </div>
-
-          <div className="control-group">
-            <span className="control-label">お住まいの都道府県</span>
-            <select
-              className="custom-select"
-              value={homePref}
-              onChange={(e) => setHomePref(e.target.value)}
-            >
-              {allPrefs.map((p) => (
-                <option key={p} value={p}>
-                  {p}県
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="control-group">
-            <span className="control-label">現在の支払保険料</span>
-            <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-              <input
-                type="number"
-                className="custom-input"
-                value={userInsurance}
-                onChange={(e) => setUserInsurance(Math.max(0, Number(e.target.value)))}
-                placeholder="毎月の支払金額"
-              />
-              <span style={{ position: "absolute", right: "12px", color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: "700" }}>円</span>
-            </div>
+          <div className="title-group">
+            <h1 className="header-title">協会けんぽ 保険料削減シミュレーター</h1>
+            <p className="disclaimer-text">
+              ※ 本シミュレーターの数値は統計モデルに基づく<strong>概算・目安</strong>です。実際の保険料率を保証するものではありません。
+            </p>
           </div>
         </div>
       </header>
 
-      {/* ==========================================================================
-         メインエリア（左上：結果表示・統計因果モデル、右上：スライダー5指標）
-         ========================================================================== */}
-      <main className="main-grid">
-        {/* 左上ブロック: シミュレーション結果＆統計解説 */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          <section className="glass-card">
-            <h2 className="left-block-title">📊 シミュレーション結果</h2>
-            <div className="result-section">
-              <div className="comparison-box">
-                <span className="comparison-label">都道府県単位保険料率</span>
-                <div className="comparison-values">
-                  <div className="value-item">
-                    <span className="value-title">現在の料率 ({homePref})</span>
-                    <span className="value-number current">{homeData ? homeData.rate.toFixed(2) : "-"}%</span>
-                  </div>
-                  <div className="comparison-arrow">⬇</div>
-                  <div className="value-item" style={{ alignItems: "flex-end" }}>
-                    <span className="value-title">シミュレーション後</span>
-                    <span className="value-number simulated">{simResult.simulatedRate.toFixed(2)}%</span>
-                  </div>
+      {/* ================================================================
+         メインレイアウト（上段: 結果バナー、下段: 2カラム入力+スライダー）
+         ================================================================ */}
+      <main className="main-layout">
+
+        {/* === 上段: シミュレーション結果（メイン表示） === */}
+        <section className="glass-card results-banner">
+          <div className="result-main-info">
+            <h2 className="result-headline">📊 シミュレーション結果</h2>
+
+            {/* 保険料率の変化 */}
+            <div className="rate-comparison-strip">
+              <div className="rate-box">
+                <span className="rate-label">現在の保険料率（{homePref}県）</span>
+                <span className="rate-value current">{homeData ? homeData.rate.toFixed(2) : "-"}%</span>
+              </div>
+              <div className="rate-arrow">→</div>
+              <div className="rate-box">
+                <span className="rate-label">改善後の保険料率</span>
+                <span className="rate-value simulated">{simResult.simulatedRate.toFixed(2)}%</span>
+              </div>
+            </div>
+
+            {/* 金額の比較 */}
+            <div className="amount-comparison">
+              <div className="amount-box">
+                <span className="amount-label">現在の{mode === "individual" ? "年間保険料（自己負担）" : "年間保険料（会社負担）"}</span>
+                <span className="amount-value current">{simResult.currentYearly.toLocaleString()}<small>円</small></span>
+                <span className="amount-monthly">月額 {simResult.currentMonthly.toLocaleString()}円</span>
+              </div>
+              <div className="amount-arrow">➔</div>
+              <div className="amount-box">
+                <span className="amount-label">健康指標改善後</span>
+                <span className="amount-value simulated">{simResult.simulatedYearly.toLocaleString()}<small>円</small></span>
+                <span className="amount-monthly">月額 {simResult.simulatedMonthly.toLocaleString()}円</span>
+              </div>
+            </div>
+
+            {/* 削減/負担増のハイライト */}
+            <div className={`savings-banner ${isSaving ? "" : "warning"}`}>
+              <span className="savings-banner-amount">
+                {isSaving ? "✨" : "⚠️"} 年間 {absDeltaYearly.toLocaleString()} 円の{isSaving ? "削減" : "負担増"}
+              </span>
+              <span className="savings-banner-sub">
+                （月々 {absDeltaMonthly.toLocaleString()} 円{isSaving ? "お得" : "の支出増"}）
+              </span>
+            </div>
+          </div>
+
+          {/* サイドカラム: 例え話＆傷病手当金 */}
+          <div className="result-side-info">
+            {funExample && isSaving && (
+              <div className="fun-fact-card">
+                <span className="fun-fact-emoji">{funExample.emoji}</span>
+                <div className="fun-fact-body">
+                  <span className="fun-fact-lead">浮いた金額で...</span>
+                  <strong className="fun-fact-main">{funExample.text}</strong>
                 </div>
               </div>
+            )}
+            <div className="info-card nagasaki">
+              <h4>💡 長崎県の傷病手当金</h4>
+              <p>
+                長崎県の傷病手当金1件あたりの平均受給額は<strong>約26.2万円</strong>（全国平均よりやや高め）。
+                健康指標の改善は保険料率を下げるだけでなく、従業員の病欠リスクの低減にも貢献します。
+              </p>
+            </div>
+          </div>
+        </section>
 
-              <div className="comparison-box">
-                <span className="comparison-label">月額支払い保険料</span>
-                <div className="comparison-values">
-                  <div className="value-item">
-                    <span className="value-title">現在の支払額</span>
-                    <span className="value-number current">{userInsurance.toLocaleString()}円</span>
-                  </div>
-                  <div className="comparison-arrow">⬇</div>
-                  <div className="value-item" style={{ alignItems: "flex-end" }}>
-                    <span className="value-title">シミュレーション後</span>
-                    <span className="value-number simulated">{simResult.simulatedInsurance.toLocaleString()}円</span>
-                  </div>
-                </div>
+        {/* === 下段: 2カラム（左: 設定入力、右: 5指標スライダー） === */}
+        <div className="main-grid">
+          {/* 左カラム: 設定・入力フォーム */}
+          <section className="glass-card input-section">
+            <h2 className="section-title">⚙️ シミュレーション設定</h2>
+
+            {/* モード切替タブ */}
+            <div className="mode-tabs">
+              <button
+                className={`mode-tab ${mode === "individual" ? "active" : ""}`}
+                onClick={() => setMode("individual")}
+              >
+                👤 個人モード
+              </button>
+              <button
+                className={`mode-tab ${mode === "company" ? "active" : ""}`}
+                onClick={() => setMode("company")}
+              >
+                🏢 会社モード
+              </button>
+            </div>
+
+            <div className="input-form-area">
+              {/* 都道府県選択 */}
+              <div className="control-group">
+                <label className="control-label">お住まい / 事業所の都道府県</label>
+                <select
+                  className="custom-select"
+                  value={homePref}
+                  onChange={(e) => setHomePref(e.target.value)}
+                >
+                  {allPrefs.map((p) => (
+                    <option key={p} value={p}>{p}県</option>
+                  ))}
+                </select>
               </div>
 
-              {/* 削減額 / 負担増のダイナミックアピールバッジ */}
-              {isSaving ? (
-                <div className="savings-highlight">
-                  <span className="savings-label">✨ 想定される健康投資による削減額</span>
-                  <span className="savings-amount">
-                    年間約 {(absDelta * 12).toLocaleString()} 円 の削減チャンス！
-                  </span>
-                  <span className="savings-subtext">
-                    （月々 {absDelta.toLocaleString()} 円お得になります）
-                  </span>
-                </div>
-              ) : (
-                <div className="savings-highlight warning">
-                  <span className="savings-label" style={{ color: "#f87171" }}>⚠️ 健康指標の低下による負担増予測</span>
-                  <span className="savings-amount" style={{ color: "#f87171", textShadow: "0 0 15px rgba(239, 68, 68, 0.4)" }}>
-                    年間約 {(absDelta * 12).toLocaleString()} 円 の負担増
-                  </span>
-                  <span className="savings-subtext">
-                    （月々 {absDelta.toLocaleString()} 円の支出増になります）
-                  </span>
-                </div>
+              {/* --- 個人モード --- */}
+              {mode === "individual" && (
+                <>
+                  <div className="control-group">
+                    <label className="control-label">年収の目安</label>
+                    <p className="input-hint">
+                      給与明細の「支給額合計」×12ヶ月（＋賞与）の概算額をご入力ください。
+                      健康保険料は年収に基づいて算定されます。
+                    </p>
+                    <div className="input-with-unit">
+                      <input
+                        type="number"
+                        className="custom-input"
+                        value={userIncome}
+                        onChange={(e) => setUserIncome(Math.max(0, Number(e.target.value)))}
+                        min={0}
+                      />
+                      <span className="input-unit">万円</span>
+                    </div>
+                  </div>
+                  <div className="mynaportal-mock">
+                    <button className="mynaportal-btn" disabled>
+                      🐰 マイナポータルから自動入力（準備中）
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* --- 会社モード --- */}
+              {mode === "company" && (
+                <>
+                  <div className="control-group">
+                    <label className="control-label">月額健康保険料（会社負担分）</label>
+                    <p className="input-hint">
+                      協会けんぽからの領収書に記載されている月額の健康保険料をご入力ください。
+                    </p>
+                    <div className="input-with-unit">
+                      <input
+                        type="number"
+                        className="custom-input"
+                        value={companyHealthPremium}
+                        onChange={(e) => setCompanyHealthPremium(Math.max(0, Number(e.target.value)))}
+                        min={0}
+                      />
+                      <span className="input-unit">円/月</span>
+                    </div>
+                  </div>
+                  <div className="control-group">
+                    <label className="control-label">月額介護保険料（会社負担分）</label>
+                    <p className="input-hint">
+                      40歳以上の従業員がいる場合に発生する介護保険料をご入力ください。
+                    </p>
+                    <div className="input-with-unit">
+                      <input
+                        type="number"
+                        className="custom-input"
+                        value={companyCarePremium}
+                        onChange={(e) => setCompanyCarePremium(Math.max(0, Number(e.target.value)))}
+                        min={0}
+                      />
+                      <span className="input-unit">円/月</span>
+                    </div>
+                  </div>
+                  <div className="control-group">
+                    <label className="control-label">協会けんぽ加入社員数</label>
+                    <div className="input-with-unit">
+                      <input
+                        type="number"
+                        className="custom-input"
+                        value={employeeCount}
+                        onChange={(e) => setEmployeeCount(Math.max(1, Number(e.target.value)))}
+                        min={1}
+                      />
+                      <span className="input-unit">人</span>
+                    </div>
+                  </div>
+                  <div className="control-group">
+                    <label className="control-label">うち40歳以上の社員数</label>
+                    <div className="input-with-unit">
+                      <input
+                        type="number"
+                        className="custom-input"
+                        value={seniorCount}
+                        onChange={(e) => setSeniorCount(Math.max(0, Math.min(employeeCount, Number(e.target.value))))}
+                        min={0}
+                        max={employeeCount}
+                      />
+                      <span className="input-unit">人</span>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </section>
 
-          {/* 比較分析ハイライトカード：クリックされた都道府県との健康指標比較および教育メッセージの強調 */}
-          {selectedPref !== homePref && selectedPrefData && (
-            <div className="comparison-highlight-card">
-              <div className="comp-card-header">
-                <span className="comp-card-badge">⚡ 予防医療投資 比較シミュレーション</span>
-                <h3 className="comp-card-title">
-                  もし <strong>{homePref}県</strong> が <strong>{selectedPref}県</strong> と同等の健康指標を達成したら？
-                </h3>
-              </div>
-              
-              <div className="comp-grid">
-                <div className="comp-item">
-                  <span className="comp-label">{homePref}県 の現在の実績率</span>
-                  <span className="comp-val current">{homeData ? homeData.rate.toFixed(2) : "-"}%</span>
-                </div>
-                <div className="comp-item">
-                  <span className="comp-label">{selectedPref}県 の実際の実績率</span>
-                  <span className="comp-val target">{selectedPrefData.rate.toFixed(2)}%</span>
-                </div>
-                <div className="comp-item highlight">
-                  <span className="comp-label">{homePref}県 に{selectedPref}県の指標を適用</span>
-                  <span className="comp-val simulated">{simResult.simulatedRate.toFixed(2)}%</span>
-                </div>
-              </div>
-
-              <div className="comp-explanation">
-                💡 <strong>ここが最も重要なポイントです！</strong><br />
-                シミュレーション後の保険料率（<strong style={{ color: "#f59e0b" }}>{simResult.simulatedRate.toFixed(2)}%</strong>）は、<strong>{homePref}県の現在値とも、{selectedPref}県の実際の値とも全く異なる新しい値</strong>になります。<br />
-                なぜなら、年齢構成・所得水準・基本医療費といった「地域特有の動かせないベース要因」は<strong>{homePref}県</strong>のものを保持したまま、<strong>健康投資（予防医療・ジェネリック等）の5つの指標だけを{selectedPref}県のレベルに引き上げた場合</strong>の、統計的な因果モデルに基づく純粋な効果を算出しているためです。
-              </div>
+          {/* 右カラム: 5指標スライダー */}
+          <section className="glass-card slider-section">
+            <div className="slider-header">
+              <h2 className="section-title">🎛 健康5指標を調整してみよう</h2>
+              <button
+                className="reset-btn"
+                onClick={() => {
+                  if (homeData) {
+                    setSliderVals({
+                      kenshin: Number(homeData.kenshin),
+                      shido: Number(homeData.shido),
+                      gensho: Number(homeData.gensho),
+                      kansho: Number(homeData.kansho),
+                      generic: Number(homeData.generic),
+                    });
+                  }
+                }}
+              >
+                🔄 初期値に戻す
+              </button>
             </div>
-          )}
+            <p className="slider-guide">
+              各指標のスライダーを動かすと、保険料率と保険料の変化がリアルタイムで上に反映されます。
+            </p>
+            <div className="slider-grid">
+              {INDICATORS.map((ind) => {
+                const key = ind.key;
+                const value = sliderVals[key];
+                const min = limits[key].min;
+                const max = limits[key].max;
+                const homeVal = homeData ? Number(homeData[key]) : 0;
 
-          {/* OLS統計因果モデルカード */}
-          <section className="glass-card" style={{ padding: "1.25rem" }}>
-            <div className="stats-model-card" style={{ marginTop: 0 }}>
-              <div className="stats-header">
-                <span className="stats-title">📈 統計的因果モデル (OLS重回帰)</span>
-                <span className="stats-r2">R² = 97.5%</span>
-              </div>
-              <div className="stats-list">
-                <div className="stats-item">
-                  <span className="stats-item-name">特定健診等の実施率 (1%向上)</span>
-                  <span className="stats-item-val neg">{(OLS_COEFFICIENTS.kenshin).toFixed(4)}%</span>
-                </div>
-                <div className="stats-item">
-                  <span className="stats-item-name">ジェネリック薬使用率 (1%向上)</span>
-                  <span className="stats-item-val neg">{(OLS_COEFFICIENTS.generic).toFixed(4)}%</span>
-                </div>
-                <div className="stats-item">
-                  <span className="stats-item-name">指導対象者減少率 (1%向上)</span>
-                  <span className="stats-item-val neg">{(OLS_COEFFICIENTS.gensho).toFixed(4)}%</span>
-                </div>
-                <div className="stats-item">
-                  <span className="stats-item-name">医療機関受診勧奨率 (1%向上)</span>
-                  <span className="stats-item-val neg">{(OLS_COEFFICIENTS.kansho).toFixed(4)}%</span>
-                </div>
-                <div className="stats-item">
-                  <span className="stats-item-name">特定保健指導実施率 (1%向上)</span>
-                  <span className="stats-item-val neg" style={{ color: "var(--text-muted)" }}>{(OLS_COEFFICIENTS.shido).toFixed(4)}%</span>
-                </div>
-              </div>
-              <div className="stats-footer">
-                💡 **統計的調整済み因果モデル**：年齢構成、所得水準、基本医療給付費、精算分の影響を除外し、5つの健康指標が保険料率に与える「純粋な削減寄与度」を数式化しています。
-              </div>
+                return (
+                  <div className="slider-card" key={key}>
+                    <div className="slider-title">{ind.name}</div>
+                    <div className="slider-description">{ind.description}</div>
+                    <div className="reference-value">
+                      現在値: <span>{homeVal.toFixed(1)}%</span>
+                    </div>
+                    <div className="vertical-slider-wrapper">
+                      <input
+                        type="range"
+                        min={min}
+                        max={max}
+                        step={0.1}
+                        value={value}
+                        className="slider-vertical"
+                        onChange={(e) =>
+                          setSliderVals({
+                            ...sliderVals,
+                            [key]: parseFloat(e.target.value),
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="slider-value">{value.toFixed(1)}%</div>
+                  </div>
+                );
+              })}
             </div>
           </section>
         </div>
-
-        {/* 右上ブロック: 5指標のボリュームスライダー */}
-        <section className="glass-card">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-            <h2 className="left-block-title" style={{ marginBottom: 0 }}>🎛 インセンティブ5指標シミュレーター</h2>
-            <button
-              onClick={() => {
-                if (homeData) {
-                  setSliderVals({
-                    kenshin: Number(homeData.kenshin),
-                    shido: Number(homeData.shido),
-                    gensho: Number(homeData.gensho),
-                    kansho: Number(homeData.kansho),
-                    generic: Number(homeData.generic),
-                  });
-                }
-              }}
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "var(--text-main)",
-                padding: "0.4rem 0.8rem",
-                borderRadius: "8px",
-                fontSize: "0.75rem",
-                fontWeight: "700",
-                cursor: "pointer",
-                transition: "var(--transition)"
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.12)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
-            >
-              🔄 現在の県の初期値にリセット
-            </button>
-          </div>
-          <div className="slider-grid">
-            {INDICATORS.map((ind) => {
-              const key = ind.key;
-              const value = sliderVals[key];
-              const min = limits[key].min;
-              const max = limits[key].max;
-              const homeVal = homeData ? Number(homeData[key]) : 0;
-
-              return (
-                <div className="slider-card" key={key}>
-                  <div className="slider-title">{ind.name}</div>
-                  
-                  {/* 住んでいる県の指標値（固定値として比較用に表示） */}
-                  <div className="reference-value">
-                    現在値: <span>{homeVal.toFixed(1)}%</span>
-                  </div>
-
-                  {/* 縦型スライダー */}
-                  <div className="vertical-slider-wrapper">
-                    <input
-                      type="range"
-                      min={min}
-                      max={max}
-                      step={0.1}
-                      value={value}
-                      className="slider-vertical"
-                      onChange={(e) =>
-                        setSliderVals({
-                          ...sliderVals,
-                          [key]: parseFloat(e.target.value),
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div className="slider-value">{value.toFixed(1)}%</div>
-                  <div className="slider-range-limits">
-                    Min: {min.toFixed(1)}% | Max: {max.toFixed(1)}%
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
       </main>
 
-      {/* ==========================================================================
-         下部ブロック: 47都道府県棒グラフ
-         ========================================================================== */}
-      <footer className="glass-card bottom-block">
-        <div className="chart-header">
-          <h2 className="left-block-title" style={{ marginBottom: 0 }}>
-            🗺 47都道府県保険料率一覧（シミュレーション位置の可視化）
-          </h2>
-          <div className="chart-legend">
-            <div className="legend-item">
-              <span className="legend-color home"></span>
-              <span>選択都道府県 ({homePref})</span>
-            </div>
-            <div className="legend-item">
-              <span className="legend-color selected"></span>
-              <span>直前選択・比較対象 ({selectedPref})</span>
-            </div>
-            <div className="legend-item">
-              <span className="legend-color normal"></span>
-              <span>その他の都道府県</span>
-            </div>
-          </div>
-        </div>
-
-        {/* スクロール可能なコンテナ */}
-        <div className="chart-scroll-container" ref={chartContainerRef} style={{ position: "relative" }}>
-          <svg className="bar-chart-svg" width={chartWidth} height={chartHeight}>
-            {/* Y軸補助線 */}
-            {[9.0, 9.5, 10.0, 10.5, 11.0].map((gridRate) => {
-              const y = getYCoordinate(gridRate);
-              return (
-                <g key={gridRate}>
-                  <line className="grid-line" x1={paddingLeft} y1={y} x2={chartWidth - 20} y2={y} />
-                  <text
-                    x={paddingLeft - 8}
-                    y={y + 4}
-                    fill="var(--text-muted)"
-                    fontSize="9px"
-                    textAnchor="end"
-                    fontWeight="700"
-                  >
-                    {gridRate.toFixed(1)}%
-                  </text>
-                </g>
-              );
-            })}
-
-            {/* 棒グラフ本体の描画 */}
-            {currentYearData.map((d, index) => {
-              const x = paddingLeft + index * (barWidth + barGap);
-              const y = getYCoordinate(d.rate);
-              const barHeight = chartHeight - paddingBottom - y;
-
-              // 色の決定 (住んでいる県 = 水色、選択・シミュレーション元 = 緑、その他 = 薄い半透明白)
-              let fill = "rgba(255, 255, 255, 0.15)";
-              let stroke = "none";
-              let strokeWidth = 0;
-              if (d.branch === homePref) {
-                fill = "var(--accent)";
-                stroke = "#ffffff";
-                strokeWidth = 1;
-              } else if (d.branch === selectedPref) {
-                fill = "var(--primary)";
-                stroke = "#ffffff";
-                strokeWidth = 1.5;
-              }
-
-              return (
-                <g key={d.branch}>
-                  <rect
-                    className="bar-rect"
-                    x={x}
-                    y={y}
-                    width={barWidth}
-                    height={Math.max(2, barHeight)}
-                    fill={fill}
-                    stroke={stroke}
-                    strokeWidth={strokeWidth}
-                    rx={3}
-                    onClick={() => handleBarClick(d.branch)}
-                    onMouseMove={(e) => handleBarMouseMove(e, d)}
-                    onMouseLeave={() => setTooltip((t) => ({ ...t, show: false }))}
-                  />
-                  {/* 県名の縦書き表示 */}
-                  <text
-                    className="bar-label"
-                    x={x + barWidth / 2}
-                    y={chartHeight - paddingBottom + 14}
-                    fontWeight={d.branch === homePref || d.branch === selectedPref ? "700" : "500"}
-                    fill={
-                      d.branch === homePref
-                        ? "var(--accent)"
-                        : d.branch === selectedPref
-                        ? "var(--text-highlight)"
-                        : "var(--text-muted)"
-                    }
-                  >
-                    {d.branch}
-                  </text>
-                </g>
-              );
-            })}
-
-            {/* 基準お住まいの県 現在値の横ライン */}
-            {homeData && (
-              <g>
-                <line 
-                  x1={paddingLeft} 
-                  y1={homeY} 
-                  x2={chartWidth - 20} 
-                  y2={homeY} 
-                  stroke="var(--accent)" 
-                  strokeWidth={1.5} 
-                  strokeDasharray="4,4"
-                  opacity={0.85}
-                />
-                <text
-                  x={chartWidth - 25}
-                  y={homeY - 6}
-                  fill="var(--accent)"
-                  fontSize="9px"
-                  fontWeight="800"
-                  textAnchor="end"
-                >
-                  {homePref}県 現在値: {homeData.rate.toFixed(2)}%
-                </text>
-              </g>
-            )}
-
-            {/* シミュレーション後の横ライン */}
-            <g>
-              <line 
-                x1={paddingLeft} 
-                y1={simY} 
-                x2={chartWidth - 20} 
-                y2={simY} 
-                className="simulated-line-glow"
-                strokeWidth={2}
-                strokeDasharray="6,4"
-              />
-              <text
-                x={chartWidth - 25}
-                y={simY - 6}
-                fill="#f59e0b"
-                fontSize="9px"
-                fontWeight="900"
-                textAnchor="end"
-                style={{ filter: "drop-shadow(0px 0px 4px rgba(245,158,11,0.6))" }}
-              >
-                シミュレーション後: {simResult.simulatedRate.toFixed(2)}%
-              </text>
-            </g>
-
-            <line className="axis-line" x1={paddingLeft} y1={chartHeight - paddingBottom} x2={chartWidth - 20} y2={chartHeight - paddingBottom} />
-          </svg>
-
-          {/* カスタムツールチップの表示 */}
-          {tooltip.show && (
-            <div
-              className="chart-tooltip"
-              style={{
-                display: "block",
-                left: `${tooltip.x}px`,
-                top: `${tooltip.y}px`,
-              }}
-            >
-              <div className="tooltip-title">{tooltip.prefName}県</div>
-              <div className="tooltip-item">
-                <span className="label">保険料率:</span>
-                <span className="val" style={{ color: "var(--text-highlight)" }}>{tooltip.rate.toFixed(2)}%</span>
-              </div>
-              <div className="tooltip-item">
-                <span className="label">特定健診等:</span>
-                <span className="val">{tooltip.kenshin.toFixed(1)}%</span>
-              </div>
-              <div className="tooltip-item">
-                <span className="label">特定保健指導:</span>
-                <span className="val">{tooltip.shido.toFixed(1)}%</span>
-              </div>
-              <div className="tooltip-item">
-                <span className="label">対象者減少率:</span>
-                <span className="val">{tooltip.gensho.toFixed(1)}%</span>
-              </div>
-              <div className="tooltip-item">
-                <span className="label">受診勧奨率:</span>
-                <span className="val">{tooltip.kansho.toFixed(1)}%</span>
-              </div>
-              <div className="tooltip-item">
-                <span className="label">後発医薬品:</span>
-                <span className="val">{tooltip.generic.toFixed(1)}%</span>
-              </div>
-              <div style={{ fontSize: "0.65rem", color: "var(--primary)", marginTop: "0.4rem", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "0.2rem" }}>
-                💡 クリックしてこの県のベースデータでシミュレーション
-              </div>
-            </div>
-          )}
-        </div>
+      {/* ================================================================
+         フッター
+         ================================================================ */}
+      <footer className="app-footer">
+        <p>&copy; 長大データバンクデータ塾「長崎県民の手取りを増やす」All Rights Reserved.</p>
       </footer>
     </div>
   );
